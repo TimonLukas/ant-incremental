@@ -8,6 +8,7 @@
       :cost="prices.generators[name].amount.value"
       @buy="$emit('buy', name)"
     )
+  button.navigate.upgrades(@click="$emit('navigate', 'upgrades')") Go to upgrades
   .background
     .dirt
     .grass
@@ -27,7 +28,7 @@ export default defineComponent({
   components: {
     Generator,
   },
-  emits: ["buy"],
+  emits: ["buy", "navigate"],
   setup() {
     const { state, prices } = inject(PROVIDE_KEY) as {
       state: GameState
@@ -41,7 +42,9 @@ export default defineComponent({
 
 <style lang="sass">
 .view-anthill
-  position: relative
+  position: absolute
+  top: 0
+  left: 0
   display: flex
   align-items: center
   justify-content: center
@@ -53,6 +56,14 @@ export default defineComponent({
 
     .generator
       margin-bottom: .5rem
+
+  .navigate
+    position: absolute
+    z-index: 2
+
+    &.upgrades
+      bottom: 1rem
+      right: 1rem
 
   .background
     position: absolute

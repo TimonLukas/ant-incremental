@@ -1,7 +1,4 @@
 export const AUTOSAVE_INTERVAL_IN_MS = 10 * 1000
 export const GAME_SAVE_LOCAL_STORAGE_KEY = "ANT-INCREMENTAL-SAVE"
 
-export const TARGET_RENDER_WIDTH_IN_PX = 1920
-export const TARGET_RENDER_HEIGHT_IN_PX = 969
-
 export const PROVIDE_KEY = "anthill-game"
