@@ -1,22 +1,27 @@
 <template lang="pug">
 .overlay-currencies
-  currency(name="Crumbs" :amount="currencies.crumbs.amount")
+  currency(name="Crumbs" :amount="state.currencies[GameCurrency.CRUMBS]")
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue"
+import { defineComponent, inject } from "vue"
 
+import { Currency as GameCurrency } from "@/game/currency"
 import { Currency } from "@/components/CurrencyOverlay"
+import { PROVIDE_KEY } from "@/constants"
+import { GameState } from "@/game/game-state"
 
 export default defineComponent({
   components: {
     Currency,
   },
-  props: {
-    currencies: {
-      type: Object,
-      required: true,
-    },
+  setup() {
+    const { state } = inject(PROVIDE_KEY) as { state: GameState }
+
+    return {
+      GameCurrency,
+      state,
+    }
   },
 })
 </script>

@@ -1,16 +1,13 @@
 import { reactive } from "vue"
-import {
-  GameState,
-  Generator,
-  Generators,
-  getStartState,
-  isCurrencyGenerator,
-  isGeneratorGenerator,
-  save,
-} from "@/game/game-state"
 import { AUTOSAVE_INTERVAL_IN_MS } from "@/constants"
+import { generatorNames, generators } from "./generators"
+import { GameState, getStartState, save } from "./game-state"
+import { Prices, usePrices } from "@/game/prices"
 
-export const useGame = (): GameState => {
+export const useGame = (): {
+  state: GameState
+  prices: Prices
+} => {
   const state = reactive<GameState>(getStartState())
 
   setInterval(() => {
@@ -22,23 +19,30 @@ export const useGame = (): GameState => {
     const elapsedTimeInS = (Date.now() - lastUpdateExecution) / 1000
     lastUpdateExecution = Date.now()
 
-    for (const name in state.generators) {
-      const generator = state.generators[name as Generators]
+    for (const name of generatorNames) {
+      const amounts = state.generators[name]
+      const totalAmount = amounts.bought + amounts.generated
 
-      if (generator.amount === 0) {
+      if (totalAmount === 0) {
         continue
       }
 
-      if (isCurrencyGenerator(generator)) {
-        state.currencies[generator.productionTarget].amount +=
-          generator.baseProduction * generator.amount * elapsedTimeInS
-      }
+      const generator = generators[name]
 
-      if (isGeneratorGenerator(generator)) {
-        state.generators[generator.productionTarget].amount +=
-          generator.baseProduction *
-          Math.pow(generator.productionIncrease, generator.amount - 1) *
-          elapsedTimeInS
+      const productionBonus = Math.pow(2, Math.floor(amounts.bought / 10))
+
+      if (generator.production.type === "currency") {
+        state.currencies[generator.production.target] +=
+          generator.production.baseAmount *
+          totalAmount *
+          elapsedTimeInS *
+          productionBonus
+      } else if (generator.production.type === "generator") {
+        state.generators[generator.production.target].generated +=
+          generator.production.baseAmount *
+          Math.pow(generator.production.increase, totalAmount - 1) *
+          elapsedTimeInS *
+          productionBonus
       }
     }
 
@@ -46,5 +50,10 @@ export const useGame = (): GameState => {
   }
   update()
 
-  return state
+  const prices = usePrices(state)
+
+  return {
+    state,
+    prices,
+  }
 }

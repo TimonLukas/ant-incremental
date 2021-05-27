@@ -1,7 +1,7 @@
 <template lang="pug">
 .generator
   .name {{ name }}:
-  .amount {{ amount.toFixed(0) }}
+  .amount {{ amount.bought.toFixed(0) }} [+ {{ amount.generated.toFixed(0) }}]
   button.buy(@click="$emit('buy')") Cost: {{ cost.toFixed(0) }}
 </template>
 
@@ -15,7 +15,7 @@ export default defineComponent({
       required: true,
     },
     amount: {
-      type: Number,
+      type: Object,
       required: true,
     },
     cost: {

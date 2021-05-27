@@ -1,11 +1,13 @@
 <template lang="pug">
 .view-anthill
   .generators
-    generator(name="Worker Ant" :amount="state.generators.worker.amount" :cost="prices.generators.worker.value" @buy="$emit('buy', 'worker')")
-    generator(name="Breeder Ant" :amount="state.generators.breeder.amount" :cost="prices.generators.breeder.value" @buy="$emit('buy', 'breeder')")
-    generator(name="Mother Ant" :amount="state.generators.mother.amount" :cost="prices.generators.mother.value" @buy="$emit('buy', 'mother')")
-    generator(name="Queen Ant" :amount="state.generators.queen.amount" :cost="prices.generators.queen.value" @buy="$emit('buy', 'queen')")
-    generator(name="Demi-God Ant" :amount="state.generators.demiGod.amount" :cost="prices.generators.demiGod.value" @buy="$emit('buy', 'demiGod')")
+    generator(
+      v-for="(generator, name) in generators"
+      :name="generator.name"
+      :amount="state.generators[name]"
+      :cost="prices.generators[name].amount.value"
+      @buy="$emit('buy', name)"
+    )
   .background
     .dirt
     .grass
@@ -13,25 +15,26 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue"
+import { defineComponent, inject } from "vue"
 
 import { Generator } from "@/components/Anthill"
-import { Generators } from "@/game/game-state"
+import { PROVIDE_KEY } from "@/constants"
+import { generators } from "@/game/generators"
+import { GameState } from "@/game/game-state"
+import { Prices } from "@/game/prices"
 
 export default defineComponent({
   components: {
     Generator,
   },
   emits: ["buy"],
-  props: {
-    state: {
-      type: Object,
-      required: true,
-    },
-    prices: {
-      type: Object,
-      required: true,
-    },
+  setup() {
+    const { state, prices } = inject(PROVIDE_KEY) as {
+      state: GameState
+      prices: Prices
+    }
+
+    return { state, prices, generators }
   },
 })
 </script>

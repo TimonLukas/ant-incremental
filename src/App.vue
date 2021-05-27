@@ -2,22 +2,22 @@
 .world(
   :style="{ '--render-width': `${TARGET_RENDER_WIDTH_IN_PX}px`, '--render-height': `${TARGET_RENDER_HEIGHT_IN_PX}px`, '--scale-factor': scaleFactor }"
   )
-  currency-overlay(:currencies="game.currencies")
-  anthill(:state="game" :prices="prices" @buy="buy")
+  currency-overlay
+  anthill(@buy="buy")
 </template>
 
 <script lang="ts">
-import { ref, defineComponent } from "vue"
+import { ref, defineComponent, provide, unref } from "vue"
 import { useEventListener } from "@vueuse/core"
 
 import {
   TARGET_RENDER_WIDTH_IN_PX,
   TARGET_RENDER_HEIGHT_IN_PX,
+  PROVIDE_KEY,
 } from "@/constants"
 import { Anthill, CurrencyOverlay } from "@/views"
 import { useGame } from "@/game"
-import { usePrices } from "@/game/prices"
-import { Generators } from "@/game/game-state"
+import { GeneratorNames, generators } from "@/game/generators"
 
 export default defineComponent({
   components: {
@@ -37,24 +37,24 @@ export default defineComponent({
     updateScaleFactor()
     useEventListener("resize", updateScaleFactor)
 
-    const game = useGame()
-    const prices = usePrices(game)
+    const { state, prices } = useGame()
 
-    function buy(generator: Generators) {
-      const price = prices.generators[generator].value
+    provide(PROVIDE_KEY, { state, prices })
 
-      if (game.currencies.crumbs.amount < price) {
+    function buy(generator: GeneratorNames) {
+      const price = unref(prices.generators[generator].amount)
+      const { currency } = generators[generator].baseCost
+
+      if (state.currencies[currency] < price) {
         return
       }
 
-      game.currencies.crumbs.amount -= price
-      game.generators[generator].amount++
+      state.currencies[currency] -= price
+      state.generators[generator].bought++
     }
 
     return {
       scaleFactor,
-      game,
-      prices,
       buy,
       TARGET_RENDER_WIDTH_IN_PX,
       TARGET_RENDER_HEIGHT_IN_PX,

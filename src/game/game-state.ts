@@ -1,106 +1,62 @@
 import { GAME_SAVE_LOCAL_STORAGE_KEY } from "@/constants"
+import { Currency } from "@/game/currency"
+import { GeneratorNames } from "@/game/generators"
 
-export type Generator = {
-  amount: number
-  modifiers: number[]
-  productionType: "currencies" | "generators"
-  productionTarget: Currencies | Generators
-  baseProduction: number
-  productionIncrease: number
-}
+const SAVE_GAME_VERSION = 0
 
-export type CurrencyGenerator = Generator & {
-  productionType: "currencies"
-  productionTarget: Currencies
-}
-
-export type GeneratorGenerator = Generator & {
-  productionType: "generators"
-  productionTarget: Generators
-}
-
-export const isCurrencyGenerator = (
-  generator: Generator
-): generator is CurrencyGenerator => generator.productionType === "currencies"
-
-export const isGeneratorGenerator = (
-  generator: Generator
-): generator is GeneratorGenerator => generator.productionType === "generators"
-
-export interface Currency {
-  amount: number
-}
-
-export type Currencies = "crumbs"
-export type Generators = "worker" | "breeder" | "mother" | "queen" | "demiGod"
-
-export interface GameState {
-  currencies: {
-    [key in Currencies]: Currency
-  }
-
-  generators: {
-    [key in Generators]: Generator
-  }
-
-  upgrades: boolean[]
+export type GameState = {
+  currencies: Record<Currency, number>
+  generators: Record<
+    GeneratorNames,
+    {
+      bought: number
+      generated: number
+    }
+  >
 }
 
 export const initialize = (): GameState => ({
   currencies: {
-    crumbs: {
-      amount: 10,
-    },
+    [Currency.CRUMBS]: 10,
   },
   generators: {
     worker: {
-      amount: 0,
-      modifiers: [],
-      productionType: "currencies",
-      productionTarget: "crumbs",
-      baseProduction: 3,
-      productionIncrease: 3,
+      bought: 0,
+      generated: 0,
     },
     breeder: {
-      amount: 0,
-      modifiers: [],
-      productionType: "generators",
-      productionTarget: "worker",
-      baseProduction: 2.5,
-      productionIncrease: 1.44,
+      bought: 0,
+      generated: 0,
     },
     mother: {
-      amount: 0,
-      modifiers: [],
-      productionType: "generators",
-      productionTarget: "breeder",
-      baseProduction: 1.5,
-      productionIncrease: 1.44,
+      bought: 0,
+      generated: 0,
     },
     queen: {
-      amount: 0,
-      modifiers: [],
-      productionType: "generators",
-      productionTarget: "mother",
-      baseProduction: 4,
-      productionIncrease: 1.44,
+      bought: 0,
+      generated: 0,
     },
     demiGod: {
-      amount: 0,
-      modifiers: [],
-      productionType: "generators",
-      productionTarget: "queen",
-      baseProduction: 3,
-      productionIncrease: 1.44,
+      bought: 0,
+      generated: 0,
     },
   },
-  upgrades: [],
 })
 
+type SavedGameState = {
+  state: GameState
+  version: number
+}
+
 export const save = (state: GameState): void => {
+  const saveGame = {
+    state,
+    version: SAVE_GAME_VERSION,
+  }
+
   window.localStorage.setItem(
     GAME_SAVE_LOCAL_STORAGE_KEY,
-    JSON.stringify(state)
+    JSON.stringify(saveGame)
   )
 }
 
@@ -111,7 +67,16 @@ export const load = (): GameState | null => {
     return null
   }
 
-  return JSON.parse(savedState)
+  const parsedState: SavedGameState = JSON.parse(savedState)
+
+  if (
+    typeof parsedState.version === "undefined" ||
+    parsedState.version < SAVE_GAME_VERSION
+  ) {
+    return null
+  }
+
+  return parsedState.state
 }
 
 export const getStartState = (): GameState => {
