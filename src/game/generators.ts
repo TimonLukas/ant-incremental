@@ -79,7 +79,7 @@ export const generators: Record<GeneratorNames, Generator> = {
     costCoefficient: COST_COEFFICIENT,
     production: {
       type: "generator",
-      target: "demiGod",
+      target: "queen",
       baseAmount: 2,
       increase: 1.2,
     },
