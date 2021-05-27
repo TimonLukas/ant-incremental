@@ -9,6 +9,7 @@
       @buy="$emit('buy', name)"
     )
   button.navigate.upgrades(@click="$emit('navigate', 'upgrades')") Go to upgrades
+  button.navigate.prestige(@click="$emit('navigate', 'prestige')") Go to prestige
   .background
     .dirt
     .grass
@@ -63,6 +64,10 @@ export default defineComponent({
 
     &.upgrades
       bottom: 1rem
+      right: 1rem
+
+    &.prestige
+      top: 1rem
       right: 1rem
 
   .background

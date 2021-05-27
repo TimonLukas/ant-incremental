@@ -3,13 +3,14 @@
   currency-overlay
   anthill(@buy="buy" @navigate="ui.view = $event")
   upgrades(@navigate="ui.view = $event")
+  prestige(@navigate="ui.view = $event")
 </template>
 
 <script lang="ts">
 import { reactive, defineComponent, provide, unref, computed } from "vue"
 
 import { PROVIDE_KEY } from "@/constants"
-import { Anthill, CurrencyOverlay, Upgrades } from "@/views"
+import { Anthill, CurrencyOverlay, Prestige, Upgrades } from "@/views"
 import { useGame } from "@/game"
 import { GeneratorNames, generators } from "@/game/generators"
 
@@ -18,6 +19,7 @@ export default defineComponent({
     Anthill,
     CurrencyOverlay,
     Upgrades,
+    Prestige,
   },
   setup() {
     const ui = reactive({
@@ -46,6 +48,7 @@ export default defineComponent({
           {
             anthill: { x: 0, y: 0 },
             upgrades: { x: 0, y: -1 },
+            prestige: { x: 0, y: 1 },
           } as any
         )[ui.view])
     )
