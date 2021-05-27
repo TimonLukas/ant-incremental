@@ -24,6 +24,6 @@ export const usePrices = (state: GameState): Prices => {
           ),
         },
       ])
-    ) as Record<GeneratorNames, Cost>,
+    ) as Prices["generators"],
   }
 }

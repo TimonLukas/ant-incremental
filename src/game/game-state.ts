@@ -1,6 +1,6 @@
 import { GAME_SAVE_LOCAL_STORAGE_KEY } from "@/constants"
 import { Currency } from "@/game/currency"
-import { GeneratorNames } from "@/game/generators"
+import { generatorNames, GeneratorNames } from "@/game/generators"
 
 const SAVE_GAME_VERSION = 0
 
@@ -19,28 +19,9 @@ export const initialize = (): GameState => ({
   currencies: {
     [Currency.CRUMBS]: 10,
   },
-  generators: {
-    worker: {
-      bought: 0,
-      generated: 0,
-    },
-    breeder: {
-      bought: 0,
-      generated: 0,
-    },
-    mother: {
-      bought: 0,
-      generated: 0,
-    },
-    queen: {
-      bought: 0,
-      generated: 0,
-    },
-    demiGod: {
-      bought: 0,
-      generated: 0,
-    },
-  },
+  generators: Object.fromEntries(
+    generatorNames.map((name) => [name, { bought: 0, generated: 0 }])
+  ) as GameState["generators"],
 })
 
 type SavedGameState = {
