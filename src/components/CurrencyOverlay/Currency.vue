@@ -1,11 +1,12 @@
 <template lang="pug">
 .currency
   .name {{ name }}:
-  .amount {{ amount.toFixed(0) }}
+  .amount {{ format(amount) }}
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue"
+import { format } from "@/lib"
 
 export default defineComponent({
   props: {
@@ -18,6 +19,7 @@ export default defineComponent({
       required: true,
     },
   },
+  setup: () => ({ format }),
 })
 </script>
 

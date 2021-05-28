@@ -12,11 +12,11 @@ export type GeneratorNames =
 
 export type ProductionTarget =
   | {
-      type: "generator"
+      type: "generators"
       target: GeneratorNames
     }
   | {
-      type: "currency"
+      type: "currencies"
       target: Currency
     }
 
@@ -34,7 +34,7 @@ export const generators: Record<GeneratorNames, Generator> = {
     baseCost: { currency: Currency.CRUMBS, amount: 10 },
     costCoefficient: COST_COEFFICIENT,
     production: {
-      type: "currency",
+      type: "currencies",
       target: Currency.CRUMBS,
       baseAmount: 1,
       increase: 1,
@@ -45,10 +45,10 @@ export const generators: Record<GeneratorNames, Generator> = {
     baseCost: { currency: Currency.CRUMBS, amount: 100 },
     costCoefficient: COST_COEFFICIENT,
     production: {
-      type: "generator",
+      type: "generators",
       target: "worker",
       baseAmount: 1,
-      increase: 1.2,
+      increase: 1,
     },
   },
   mother: {
@@ -56,10 +56,10 @@ export const generators: Record<GeneratorNames, Generator> = {
     baseCost: { currency: Currency.CRUMBS, amount: 1600 },
     costCoefficient: COST_COEFFICIENT,
     production: {
-      type: "generator",
+      type: "generators",
       target: "breeder",
-      baseAmount: 1.5,
-      increase: 1.2,
+      baseAmount: 1,
+      increase: 1,
     },
   },
   queen: {
@@ -67,10 +67,10 @@ export const generators: Record<GeneratorNames, Generator> = {
     baseCost: { currency: Currency.CRUMBS, amount: 70_000 },
     costCoefficient: COST_COEFFICIENT,
     production: {
-      type: "generator",
+      type: "generators",
       target: "mother",
-      baseAmount: 1.5,
-      increase: 1.2,
+      baseAmount: 1,
+      increase: 1,
     },
   },
   demiGod: {
@@ -78,10 +78,10 @@ export const generators: Record<GeneratorNames, Generator> = {
     baseCost: { currency: Currency.CRUMBS, amount: 2_000_000 },
     costCoefficient: COST_COEFFICIENT,
     production: {
-      type: "generator",
+      type: "generators",
       target: "queen",
-      baseAmount: 2,
-      increase: 1.2,
+      baseAmount: 1,
+      increase: 1,
     },
   },
 }

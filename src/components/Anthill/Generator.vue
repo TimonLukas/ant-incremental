@@ -1,12 +1,13 @@
 <template lang="pug">
 .generator
-  .name {{ name }}:
-  .amount {{ amount.bought.toFixed(0) }} [+ {{ amount.generated.toFixed(0) }}]
-  button.buy(@click="$emit('buy')") Cost: {{ cost.toFixed(0) }}
+  .name {{ name }} (x{{ format(bonus) }}):
+  .amount {{ format(amount.bought) }} [+ {{ format(amount.generated) }}]
+  button.buy(@click="$emit('buy')") Cost: {{ format(cost) }}
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue"
+import { format } from "@/lib"
 
 export default defineComponent({
   props: {
@@ -18,12 +19,17 @@ export default defineComponent({
       type: Object,
       required: true,
     },
+    bonus: {
+      type: Number,
+      required: true,
+    },
     cost: {
       type: Number,
       required: true,
     },
   },
   emits: ["buy"],
+  setup: () => ({ format }),
 })
 </script>
 

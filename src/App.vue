@@ -26,20 +26,20 @@ export default defineComponent({
       view: "anthill",
     })
 
-    const { state, prices } = useGame()
+    const game = useGame()
 
-    provide(PROVIDE_KEY, { state, prices })
+    provide(PROVIDE_KEY, game)
 
     function buy(generator: GeneratorNames) {
-      const price = unref(prices.generators[generator].amount)
+      const price = unref(game.prices.generators[generator].amount)
       const { currency } = generators[generator].baseCost
 
-      if (state.currencies[currency] < price) {
+      if (game.state.currencies[currency] < price) {
         return
       }
 
-      state.currencies[currency] -= price
-      state.generators[generator].bought++
+      game.state.currencies[currency] -= price
+      game.state.generators[generator].bought++
     }
 
     const viewOffset = computed(
@@ -49,7 +49,7 @@ export default defineComponent({
             anthill: { x: 0, y: 0 },
             upgrades: { x: 0, y: -1 },
             prestige: { x: 0, y: 1 },
-          } as any
+          } as Record<string, Record<string, number>>
         )[ui.view])
     )
 

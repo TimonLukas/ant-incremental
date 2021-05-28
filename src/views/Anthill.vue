@@ -5,6 +5,7 @@
       v-for="(generator, name) in generators"
       :name="generator.name"
       :amount="state.generators[name]"
+      :bonus="bonuses.generators[name].value"
       :cost="prices.generators[name].amount.value"
       @buy="$emit('buy', name)"
     )
@@ -17,13 +18,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject } from "vue"
+import { defineComponent } from "vue"
 
 import { Generator } from "@/components/Anthill"
-import { PROVIDE_KEY } from "@/constants"
 import { generators } from "@/game/generators"
-import { GameState } from "@/game/game-state"
-import { Prices } from "@/game/prices"
+import { useProvidedGame } from "@/lib"
 
 export default defineComponent({
   components: {
@@ -31,12 +30,9 @@ export default defineComponent({
   },
   emits: ["buy", "navigate"],
   setup() {
-    const { state, prices } = inject(PROVIDE_KEY) as {
-      state: GameState
-      prices: Prices
-    }
+    const { state, prices, bonuses } = useProvidedGame()
 
-    return { state, prices, generators }
+    return { state, prices, bonuses, generators }
   },
 })
 </script>

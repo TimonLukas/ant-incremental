@@ -1,14 +1,15 @@
 import { reactive } from "vue"
 import { AUTOSAVE_INTERVAL_IN_MS } from "@/constants"
-import { generatorNames, generators } from "./generators"
+import { GeneratorNames, generatorNames, generators } from "./generators"
 import { GameState, getStartState, save } from "./game-state"
-import { Prices, usePrices } from "@/game/prices"
+import { Currency } from "@/game/currency"
+import { useValues } from "@/game/game-values"
 
 export const useGame = (): {
   state: GameState
-  prices: Prices
-} => {
+} & ReturnType<typeof useValues> => {
   const state = reactive<GameState>(getStartState())
+  const { prices, bonuses } = useValues(state)
 
   setInterval(() => {
     save(state)
@@ -29,20 +30,16 @@ export const useGame = (): {
 
       const generator = generators[name]
 
-      const productionBonus = Math.pow(2, Math.floor(amounts.bought / 10))
+      const productionBonus = bonuses.generators[name].value
 
-      if (generator.production.type === "currency") {
-        state.currencies[generator.production.target] +=
-          generator.production.baseAmount *
-          totalAmount *
-          elapsedTimeInS *
-          productionBonus
-      } else if (generator.production.type === "generator") {
-        state.generators[generator.production.target].generated +=
-          generator.production.baseAmount *
-          Math.pow(generator.production.increase, totalAmount - 1) *
-          elapsedTimeInS *
-          productionBonus
+      const { type, target, baseAmount } = generator.production
+
+      if (type === "currencies") {
+        state.currencies[target as Currency] +=
+          baseAmount * totalAmount * elapsedTimeInS * productionBonus
+      } else if (generator.production.type === "generators") {
+        state.generators[target as GeneratorNames].generated +=
+          baseAmount * totalAmount * elapsedTimeInS * productionBonus
       }
     }
 
@@ -50,10 +47,9 @@ export const useGame = (): {
   }
   update()
 
-  const prices = usePrices(state)
-
   return {
     state,
     prices,
+    bonuses,
   }
 }

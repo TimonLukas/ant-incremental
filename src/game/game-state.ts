@@ -2,7 +2,7 @@ import { GAME_SAVE_LOCAL_STORAGE_KEY } from "@/constants"
 import { Currency } from "@/game/currency"
 import { generatorNames, GeneratorNames } from "@/game/generators"
 
-const SAVE_GAME_VERSION = 0
+const SAVE_GAME_VERSION = 1
 
 export type GameState = {
   currencies: Record<Currency, number>
