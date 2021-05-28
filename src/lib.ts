@@ -17,5 +17,5 @@ export const format = (value: MaybeRef<number>): string => {
     return formatter.format(unrefValue)
   }
 
-  return unrefValue.toExponential(2)
+  return unrefValue.toExponential(2).replace("+", "")
 }

@@ -1,8 +1,9 @@
 import { GAME_SAVE_LOCAL_STORAGE_KEY } from "@/constants"
 import { Currency } from "@/game/currency"
 import { generatorNames, GeneratorNames } from "@/game/generators"
+import { upgrades, Upgrades } from "@/game/upgrades"
 
-const SAVE_GAME_VERSION = 1
+const SAVE_GAME_VERSION = 2
 
 export type GameState = {
   currencies: Record<Currency, number>
@@ -13,6 +14,7 @@ export type GameState = {
       generated: number
     }
   >
+  upgrades: Record<Upgrades, boolean>
 }
 
 export const initialize = (): GameState => ({
@@ -22,6 +24,9 @@ export const initialize = (): GameState => ({
   generators: Object.fromEntries(
     generatorNames.map((name) => [name, { bought: 0, generated: 0 }])
   ) as GameState["generators"],
+  upgrades: Object.fromEntries(
+    Array.from({ length: Object.keys(upgrades).length }, (_, i) => [i, false])
+  ) as Record<Upgrades, boolean>,
 })
 
 type SavedGameState = {

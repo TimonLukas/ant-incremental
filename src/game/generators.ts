@@ -1,4 +1,4 @@
-import { Buyable, Nameable } from "@/game/types"
+import { Buyable, Nameable, Rebuyable } from "@/game/types"
 import { Currency } from "@/game/currency"
 
 const COST_COEFFICIENT = 1.5
@@ -21,6 +21,7 @@ export type ProductionTarget =
     }
 
 export type Generator = Buyable &
+  Rebuyable &
   Nameable & {
     production: ProductionTarget & {
       baseAmount: number

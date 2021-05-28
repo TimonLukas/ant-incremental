@@ -1,26 +1,26 @@
 <template lang="pug">
 .overlay-currencies
-  currency(name="Crumbs" :amount="state.currencies[GameCurrency.CRUMBS]")
+  currency(name="Crumbs" :amount="state.currencies[GameCurrency.CRUMBS]" :per-second="totalProductions.currencies[GameCurrency.CRUMBS].value")
 </template>
 
 <script lang="ts">
-import { defineComponent, inject } from "vue"
+import { defineComponent } from "vue"
 
 import { Currency as GameCurrency } from "@/game/currency"
 import { Currency } from "@/components/CurrencyOverlay"
-import { PROVIDE_KEY } from "@/constants"
-import { GameState } from "@/game/game-state"
+import { useProvidedGame } from "@/lib"
 
 export default defineComponent({
   components: {
     Currency,
   },
   setup() {
-    const { state } = inject(PROVIDE_KEY) as { state: GameState }
+    const { state, totalProductions } = useProvidedGame()
 
     return {
       GameCurrency,
       state,
+      totalProductions,
     }
   },
 })
@@ -34,6 +34,6 @@ export default defineComponent({
   z-index: 10000
   margin: 1rem
   pointer-events: none
-
   font-size: 1.5rem
+  color: white
 </style>

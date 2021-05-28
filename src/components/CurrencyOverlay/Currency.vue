@@ -1,7 +1,7 @@
 <template lang="pug">
 .currency
   .name {{ name }}:
-  .amount {{ format(amount) }}
+  .amount {{ format(amount) }} ({{ format(perSecond) }}/s)
 </template>
 
 <script lang="ts">
@@ -15,6 +15,10 @@ export default defineComponent({
       required: true,
     },
     amount: {
+      type: Number,
+      required: true,
+    },
+    perSecond: {
       type: Number,
       required: true,
     },
