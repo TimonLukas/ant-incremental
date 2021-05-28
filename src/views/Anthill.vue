@@ -7,6 +7,7 @@
       :amount="state.generators[name]"
       :bonus="bonuses.generators[name].value"
       :cost="prices.generators[name].amount.value"
+      :generator-name="name"
       @buy="$emit('buy', name)"
     )
   button.navigate.upgrades(@click="$emit('navigate', 'upgrades')") Go to upgrades
@@ -49,7 +50,7 @@ export default defineComponent({
   .generators
     position: relative
     z-index: 1
-    font-size: 2rem
+    font-size: 1.5rem
 
     .generator
       margin-bottom: 2rem

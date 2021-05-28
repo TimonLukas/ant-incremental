@@ -1,5 +1,6 @@
 <template lang="pug">
 .generator
+  img.icon(:src="`/generators/${generatorName}.png`")
   .name {{ name }}
   .amount {{ format(amount.bought) }} [+ {{ format(amount.generated) }}]
   .multiplier x{{ format(bonus) }}
@@ -29,6 +30,10 @@ export default defineComponent({
       type: Number,
       required: true,
     },
+    generatorName: {
+      type: String,
+      required: true,
+    },
   },
   emits: ["buy"],
   setup(props) {
@@ -50,11 +55,16 @@ export default defineComponent({
 <style lang="sass">
 .generator
   display: grid
-  grid-template-columns: 1fr 1fr 0fr
+  grid-template-columns: 0fr 1.5fr 1fr 0fr
   grid-template-rows: 1fr 1fr
-  gap: 0 5rem
-  grid-template-areas: "name multiplier buy" "description multiplier buy"
+  gap: 0 0
+  grid-template-areas: "icon name multiplier buy" "icon description multiplier buy"
   color: white
+
+  .icon
+    grid-area: icon
+    height: 4rem
+    margin-right: 1rem
 
   .name
     grid-area: name
@@ -68,6 +78,7 @@ export default defineComponent({
     grid-area: multiplier
     display: flex
     align-items: center
+    padding-left: 1rem
 
   .buy
     grid-area: buy
