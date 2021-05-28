@@ -35,7 +35,7 @@ export default defineComponent({
     const { state } = useProvidedGame()
 
     const buttonState = computed(() => {
-      if (state.currencies[Currency.CRUMBS] > props.cost) {
+      if (state.currencies[Currency.CRUMBS] >= props.cost) {
         return "available"
       }
 

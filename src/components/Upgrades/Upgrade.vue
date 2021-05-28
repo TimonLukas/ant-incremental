@@ -41,7 +41,7 @@ export default defineComponent({
       }
 
       if (
-        state.currencies[upgrade.baseCost.currency] > upgrade.baseCost.amount
+        state.currencies[upgrade.baseCost.currency] >= upgrade.baseCost.amount
       ) {
         return "available"
       }
