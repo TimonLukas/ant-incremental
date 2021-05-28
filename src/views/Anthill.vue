@@ -52,7 +52,7 @@ export default defineComponent({
     font-size: 2rem
 
     .generator
-      margin-bottom: .5rem
+      margin-bottom: 2rem
 
   .navigate
     position: absolute
