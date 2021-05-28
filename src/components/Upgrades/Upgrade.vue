@@ -8,7 +8,7 @@
 <script lang="ts">
 import { computed, defineComponent } from "vue"
 import { format, useProvidedGame } from "@/lib"
-import { upgrades } from "@/game/upgrades"
+import { Upgrades, upgrades } from "@/game/upgrades"
 
 export default defineComponent({
   props: {
@@ -34,9 +34,9 @@ export default defineComponent({
     const { state } = useProvidedGame()
 
     const buttonState = computed(() => {
-      const upgrade = upgrades[props.id]
+      const upgrade = upgrades[props.id as unknown as Upgrades]
 
-      if (state.upgrades[props.id]) {
+      if (state.upgrades[props.id as unknown as Upgrades]) {
         return "bought"
       }
 

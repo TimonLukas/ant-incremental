@@ -9,7 +9,6 @@
 <script lang="ts">
 import { computed, defineComponent } from "vue"
 import { format, useProvidedGame } from "@/lib"
-import { upgrades } from "@/game/upgrades"
 import { Currency } from "@/game/currency"
 
 export default defineComponent({
