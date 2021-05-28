@@ -1,6 +1,6 @@
 <template lang="pug">
 .generator
-  img.icon(:src="`/generators/${generatorName}.png`")
+  img.icon(:src="`generators/${generatorName}.png`")
   .name {{ name }}
   .amount {{ format(amount.bought) }} [+ {{ format(amount.generated) }}]
   .multiplier x{{ format(bonus) }}
