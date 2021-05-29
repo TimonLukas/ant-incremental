@@ -12,17 +12,19 @@
       @buy="$emit('buy', name)"
     )
   anthill
+  ants(:ants-per-second="antsPerSecond")
   button.navigate.upgrades(@click="$emit('navigate', 'upgrades')") Go to upgrades
   button.navigate.prestige(@click="$emit('navigate', 'prestige')") Go to prestige
   buy-multiplier-selector(v-model="state.selectedBuyMultipliers.anthill")
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue"
+import { computed, defineComponent, unref } from "vue"
 
 import { BuyMultiplierSelector } from "@/components"
-import { Anthill, Generator } from "@/components/Anthill"
+import { Anthill, Generator, Ants } from "@/components/Anthill"
 import { generators } from "@/game/generators"
+import { Currency } from "@/game/currency"
 import { useProvidedGame } from "@/lib"
 
 export default defineComponent({
@@ -30,12 +32,28 @@ export default defineComponent({
     Anthill,
     BuyMultiplierSelector,
     Generator,
+    Ants,
   },
   emits: ["buy", "navigate"],
   setup() {
-    const { state, multiplierPrices, bonuses } = useProvidedGame()
+    const { state, multiplierPrices, bonuses, totalProductions } =
+      useProvidedGame()
 
-    return { state, multiplierPrices, bonuses, generators }
+    const antsPerSecond = computed(
+      () =>
+        Math.log(unref(totalProductions.currencies[Currency.CRUMBS]) + 1) /
+        Math.log(1e5)
+    )
+
+    return {
+      state,
+      multiplierPrices,
+      bonuses,
+      generators,
+      totalProductions,
+      Currency,
+      antsPerSecond,
+    }
   },
 })
 </script>
@@ -57,11 +75,17 @@ export default defineComponent({
 
   .anthill
     position: absolute
-    bottom: 15%
+    bottom: 10%
     right: 0
     transform: translateX(50%)
     z-index: 2
     height: 70vh
+
+  .ants
+    position: absolute
+    bottom: 8%
+    height: 10%
+    width: 100%
 
   .generators
     position: relative

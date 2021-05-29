@@ -11,14 +11,7 @@ currency-overlay
 </template>
 
 <script lang="ts">
-import {
-  reactive,
-  defineComponent,
-  provide,
-  unref,
-  computed,
-  watchEffect,
-} from "vue"
+import { reactive, defineComponent, provide, unref, computed } from "vue"
 
 import { PROVIDE_KEY } from "@/constants"
 import * as views from "@/views"
@@ -73,8 +66,6 @@ export default defineComponent({
         ? transforms[ui.view as keyof typeof transforms]
         : null
     )
-
-    watchEffect(() => console.log(ui.view, worldTransform.value))
 
     return {
       buyGenerator,
