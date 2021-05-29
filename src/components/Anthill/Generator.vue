@@ -5,6 +5,7 @@
   .amount {{ format(amount.bought) }} [+ {{ format(amount.generated) }}]
   .multiplier x{{ format(bonus) }}
   button.buy(@click="$emit('buy')" :class="buttonState") Cost: {{ format(cost) }}
+    |  (+ {{ multiplierPrices.generators[generatorName].buyAmount.value - amount.bought }})
 </template>
 
 <script lang="ts">
@@ -34,10 +35,14 @@ export default defineComponent({
       type: String,
       required: true,
     },
+    multiplier: {
+      type: Number,
+      required: true,
+    },
   },
   emits: ["buy"],
   setup(props) {
-    const { state } = useProvidedGame()
+    const { state, multiplierPrices } = useProvidedGame()
 
     const buttonState = computed(() => {
       if (state.currencies[Currency.CRUMBS] >= props.cost) {
@@ -47,7 +52,7 @@ export default defineComponent({
       return "unavailable"
     })
 
-    return { format, buttonState }
+    return { format, buttonState, multiplierPrices }
   },
 })
 </script>

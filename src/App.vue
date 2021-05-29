@@ -27,15 +27,18 @@ export default defineComponent({
     provide(PROVIDE_KEY, game)
 
     function buyGenerator(generator: GeneratorNames) {
-      const price = unref(game.prices.generators[generator].amount)
-      const { currency } = generators[generator].baseCost
+      const { amount, currency, buyAmount } =
+        game.multiplierPrices.generators[generator]
+      const price = unref(amount)
 
       if (game.state.currencies[currency] < price) {
         return
       }
 
+      const amountToBuy = buyAmount.value
+
       game.state.currencies[currency] -= price
-      game.state.generators[generator].bought++
+      game.state.generators[generator].bought = amountToBuy
     }
 
     function buyUpgrade(upgrade: Upgrades) {

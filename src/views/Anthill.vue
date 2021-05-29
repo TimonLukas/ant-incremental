@@ -6,12 +6,14 @@
       :name="generator.name"
       :amount="state.generators[name]"
       :bonus="bonuses.generators[name].value"
-      :cost="prices.generators[name].amount.value"
+      :cost="multiplierPrices.generators[name].amount.value"
       :generator-name="name"
+      :multiplier="state.selectedBuyMultipliers.anthill"
       @buy="$emit('buy', name)"
     )
   button.navigate.upgrades(@click="$emit('navigate', 'upgrades')") Go to upgrades
   button.navigate.prestige(@click="$emit('navigate', 'prestige')") Go to prestige
+  buy-multiplier-selector(v-model="state.selectedBuyMultipliers.anthill")
   .background
     .dirt
     .grass
@@ -19,21 +21,25 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue"
+import { defineComponent, watchEffect } from "vue"
 
+import { BuyMultiplierSelector } from "@/components"
 import { Generator } from "@/components/Anthill"
 import { generators } from "@/game/generators"
 import { useProvidedGame } from "@/lib"
 
 export default defineComponent({
   components: {
+    BuyMultiplierSelector,
     Generator,
   },
   emits: ["buy", "navigate"],
   setup() {
-    const { state, prices, bonuses } = useProvidedGame()
+    const { state, multiplierPrices, bonuses } = useProvidedGame()
 
-    return { state, prices, bonuses, generators }
+    watchEffect(() => console.log(JSON.parse(JSON.stringify(multiplierPrices))))
+
+    return { state, multiplierPrices, bonuses, generators }
   },
 })
 </script>
@@ -47,10 +53,17 @@ export default defineComponent({
   align-items: center
   justify-content: center
 
+  .buy-multiplier-selector
+    position: absolute
+    bottom: 1rem
+    left: 1rem
+    z-index: 2
+
   .generators
     position: relative
     z-index: 1
     font-size: 1.5rem
+    margin-bottom: 9%
 
     .generator
       margin-bottom: 2rem
@@ -87,8 +100,8 @@ export default defineComponent({
 
     .grass
       background-color: #1b9415
-      height: 5%
-      bottom: 7.5%
+      height: 10%
+      bottom: 8%
       z-index: 2
 
     .sky

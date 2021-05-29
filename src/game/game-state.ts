@@ -3,7 +3,7 @@ import { Currency } from "@/game/currency"
 import { generatorNames, GeneratorNames } from "@/game/generators"
 import { upgrades, Upgrades } from "@/game/upgrades"
 
-const SAVE_GAME_VERSION = 2
+const SAVE_GAME_VERSION = 3
 
 export type GameState = {
   currencies: Record<Currency, number>
@@ -15,6 +15,7 @@ export type GameState = {
     }
   >
   upgrades: Record<Upgrades, boolean>
+  selectedBuyMultipliers: Record<"anthill", number>
 }
 
 export const initialize = (): GameState => ({
@@ -27,6 +28,9 @@ export const initialize = (): GameState => ({
   upgrades: Object.fromEntries(
     Array.from({ length: Object.keys(upgrades).length }, (_, i) => [i, false])
   ) as Record<Upgrades, boolean>,
+  selectedBuyMultipliers: {
+    anthill: 1,
+  },
 })
 
 type SavedGameState = {
@@ -60,6 +64,10 @@ export const load = (): GameState | null => {
     parsedState.version < SAVE_GAME_VERSION
   ) {
     return null
+  }
+
+  if (parsedState.state.selectedBuyMultipliers.anthill === null) {
+    parsedState.state.selectedBuyMultipliers.anthill = Infinity
   }
 
   return parsedState.state

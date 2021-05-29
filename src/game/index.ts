@@ -9,7 +9,8 @@ export const useGame = (): {
   state: GameState
 } & ReturnType<typeof useValues> => {
   const state = reactive<GameState>(getStartState())
-  const { prices, bonuses, productions, totalProductions } = useValues(state)
+  const { prices, multiplierPrices, bonuses, productions, totalProductions } =
+    useValues(state)
 
   setInterval(() => {
     save(state)
@@ -35,6 +36,7 @@ export const useGame = (): {
   return {
     state,
     prices,
+    multiplierPrices,
     bonuses,
     productions,
     totalProductions,
