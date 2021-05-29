@@ -11,15 +11,7 @@ currency-overlay
 </template>
 
 <script lang="ts">
-import {
-  reactive,
-  defineComponent,
-  provide,
-  unref,
-  computed,
-  ref,
-  watchEffect,
-} from "vue"
+import { reactive, defineComponent, provide, unref, computed, ref } from "vue"
 
 import { PROVIDE_KEY } from "@/constants"
 import * as views from "@/views"
@@ -67,14 +59,6 @@ export default defineComponent({
 
     const anthillWidth = ref(1)
     const upgradesScale = computed(() => window.innerWidth / anthillWidth.value)
-
-    watchEffect(() =>
-      console.log({
-        anthillWidth: anthillWidth.value,
-        innerWidth: window.innerWidth,
-        upgradesScale: upgradesScale.value,
-      })
-    )
 
     const transforms = computed(() => ({
       upgrades: `transform: scale(${
