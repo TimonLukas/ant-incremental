@@ -116,7 +116,7 @@ export default defineComponent({
           const b = canvasSize.width * 0.4
           const c = canvasSize.width * 2.7
           const yDeviation =
-            10 * (sin((x * PI) / a) + sin((x * PI) / b) + sin((x * PI) / c))
+            5 * (sin((x * PI) / a) + sin((x * PI) / b) + sin((x * PI) / c))
 
           ctx.fillStyle = ANT_COLOR
           if (ant.lane === "top") {
@@ -131,7 +131,7 @@ export default defineComponent({
             ant.lastY = nextY
           } else {
             const nextX = ant.progress
-            const nextY = canvasSize.height - 50 + yDeviation
+            const nextY = canvasSize.height - 40 + yDeviation
             ctx.save()
             ctx.translate(ant.progress, canvasSize.height - 40 + yDeviation)
             ctx.rotate(Math.atan2(nextY - ant.lastY, nextX - ant.lastX))
