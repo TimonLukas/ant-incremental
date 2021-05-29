@@ -27,10 +27,13 @@ export const useBonuses = (state: GameState): Bonuses => {
     generators: Object.fromEntries(
       generatorNames.map((name) => [
         name,
-        computed(
-          () =>
-            Math.pow(2, Math.floor(state.generators[name].bought / 10)) *
-            upgradeBonusesByGenerator[name].value
+        computed(() =>
+          Math.max(
+            Math.floor(state.generators[name].bought / 10) *
+              2 *
+              upgradeBonusesByGenerator[name].value,
+            1
+          )
         ),
       ])
     ),
