@@ -30,7 +30,7 @@ export default defineComponent({
 .overlay-currencies
   position: absolute
   top: 0
-  left: 0
+  left: 1rem
   z-index: 10000
   margin: 1rem
   pointer-events: none

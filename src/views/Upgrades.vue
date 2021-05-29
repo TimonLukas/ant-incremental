@@ -1,5 +1,5 @@
 <template lang="pug">
-.view-upgrades
+.view-upgrades(:style="{ '--scale': scale }")
   h2 Upgrades
   .upgrades
     upgrade(
@@ -20,6 +20,12 @@ import { Upgrade } from "@/components/Upgrades"
 import { upgrades } from "@/game/upgrades"
 
 export default defineComponent({
+  props: {
+    scale: {
+      type: Number,
+      default: 1,
+    },
+  },
   components: {
     Upgrade,
   },
@@ -30,9 +36,9 @@ export default defineComponent({
 <style lang="sass">
 .view-upgrades
   color: white
-  transform: translateX(50%) scale(calc(1 / 1.5))
+  transform: translateX(50%) scale(calc(1 / var(--scale)))
   transform-origin: center
-  padding: 5rem 2rem 2rem
+  padding: 20rem 2rem 2rem
   display: flex
   align-items: center
   justify-content: center
@@ -56,7 +62,7 @@ export default defineComponent({
     position: absolute
 
     &.anthill
-      bottom: 1rem
+      bottom: 0
       left: 50%
       transform: translateX(-50%)
 </style>

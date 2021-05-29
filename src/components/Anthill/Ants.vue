@@ -5,6 +5,7 @@ canvas.ants(ref="canvas" :width="canvasSize.width" :height="canvasSize.height")
 <script lang="ts">
 import { defineComponent, ref, onMounted, reactive, onUnmounted } from "vue"
 import { useEventListener, useDebounceFn } from "@vueuse/core"
+const { PI, sin } = Math
 
 const ANT_SPEED_IN_PX_P_S = 50
 const ANT_WIDTH_IN_PX = 4
@@ -12,8 +13,6 @@ const ANT_HEIGHT_IN_PX = 2
 const ANT_COLOR = "black"
 const CRUMB_MIN_SIZE_IN_PX = 3
 const CRUMB_MAX_SIZE_IN_PX = 8
-
-const { PI, sin, cos } = Math
 
 type Ant = {
   progress: number
@@ -58,8 +57,12 @@ export default defineComponent({
     onMounted(updateCanvasSize)
 
     onMounted(() => {
-      const ctx = canvas.value!.getContext("2d")!
+      const ctx = canvas.value?.getContext("2d")
       const ants: Ant[] = []
+
+      if (!ctx) {
+        return
+      }
 
       const active = ref(true)
       let lastSpawn = 0
@@ -104,7 +107,7 @@ export default defineComponent({
             }
           }
 
-          const x = ant.progress
+          const x = ant.progress + now / 1000
           const a = canvasSize.width
           const b = canvasSize.width * 0.4
           const c = canvasSize.width * 2.7

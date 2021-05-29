@@ -1,8 +1,8 @@
 <template lang="pug">
 currency-overlay
 .world(:style="worldTransform")
-  anthill(@buy="buyGenerator" @navigate="ui.view = $event")
-  upgrades(@buy="buyUpgrade" @navigate="ui.view = $event" :class="{ active: ui.view === 'upgrades' }")
+  anthill(@buy="buyGenerator" @navigate="ui.view = $event" @anthill-width="anthillWidth = $event")
+  upgrades(@buy="buyUpgrade" @navigate="ui.view = $event" :class="{ active: ui.view === 'upgrades' }" :scale="upgradesScale")
   prestige(@navigate="ui.view = $event")
   .background
     .dirt
@@ -11,7 +11,15 @@ currency-overlay
 </template>
 
 <script lang="ts">
-import { reactive, defineComponent, provide, unref, computed } from "vue"
+import {
+  reactive,
+  defineComponent,
+  provide,
+  unref,
+  computed,
+  ref,
+  watchEffect,
+} from "vue"
 
 import { PROVIDE_KEY } from "@/constants"
 import * as views from "@/views"
@@ -57,13 +65,29 @@ export default defineComponent({
       game.state.upgrades[upgrade] = true
     }
 
-    const transforms = {
-      upgrades: "transform: scale(1.5) translateX(-50%)",
+    const anthillWidth = ref(1)
+    const upgradesScale = computed(() => window.innerWidth / anthillWidth.value)
+
+    watchEffect(() =>
+      console.log({
+        anthillWidth: anthillWidth.value,
+        innerWidth: window.innerWidth,
+        upgradesScale: upgradesScale.value,
+      })
+    )
+
+    const transforms = computed(() => ({
+      upgrades: `transform: translateY(12vh) scale(${
+        Math.round(upgradesScale.value * 100) / 100
+      }) translateX(-50%)`,
       prestige: "transform: translateY(100vh)",
-    }
+    }))
+
+    watchEffect(() => console.log(transforms.value))
+
     const worldTransform = computed(() =>
-      Object.keys(transforms).includes(ui.view)
-        ? transforms[ui.view as keyof typeof transforms]
+      Object.keys(transforms.value).includes(ui.view)
+        ? transforms.value[ui.view as keyof typeof transforms.value]
         : null
     )
 
@@ -72,6 +96,8 @@ export default defineComponent({
       buyUpgrade,
       ui,
       worldTransform,
+      anthillWidth,
+      upgradesScale,
     }
   },
 })
@@ -94,6 +120,7 @@ body
   height: 100vh
   position: relative
   transition: transform .5s
+  transform-origin: bottom
 
   > *
     width: 100%

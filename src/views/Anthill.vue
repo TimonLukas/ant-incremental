@@ -11,7 +11,7 @@
       :multiplier="state.selectedBuyMultipliers.anthill"
       @buy="$emit('buy', name)"
     )
-  anthill
+  anthill(ref="anthill" @load="emitAnthillWidth")
   ants(:ants-per-second="antsPerSecond")
   button.navigate.upgrades(@click="$emit('navigate', 'upgrades')") Go to upgrades
   button.navigate.prestige(@click="$emit('navigate', 'prestige')") Go to prestige
@@ -19,13 +19,20 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, unref } from "vue"
+import {
+  ComponentPublicInstance,
+  computed,
+  defineComponent,
+  ref,
+  unref,
+} from "vue"
 
 import { BuyMultiplierSelector } from "@/components"
 import { Anthill, Generator, Ants } from "@/components/Anthill"
 import { generators } from "@/game/generators"
 import { Currency } from "@/game/currency"
 import { useProvidedGame } from "@/lib"
+import { useEventListener } from "@vueuse/core"
 
 export default defineComponent({
   components: {
@@ -34,16 +41,23 @@ export default defineComponent({
     Generator,
     Ants,
   },
-  emits: ["buy", "navigate"],
-  setup() {
+  emits: ["buy", "navigate", "anthill-width"],
+  setup(props, { emit }) {
     const { state, multiplierPrices, bonuses, totalProductions } =
       useProvidedGame()
+    const anthill = ref<ComponentPublicInstance<typeof Anthill>>()
 
     const antsPerSecond = computed(
       () =>
         Math.log(unref(totalProductions.currencies[Currency.CRUMBS]) + 1) /
         Math.log(1e5)
     )
+
+    function emitAnthillWidth() {
+      emit("anthill-width", anthill.value?.$el.clientWidth || 1)
+    }
+
+    useEventListener("resize", emitAnthillWidth)
 
     return {
       state,
@@ -53,6 +67,8 @@ export default defineComponent({
       totalProductions,
       Currency,
       antsPerSecond,
+      anthill,
+      emitAnthillWidth,
     }
   },
 })
