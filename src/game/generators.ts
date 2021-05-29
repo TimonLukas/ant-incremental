@@ -48,8 +48,8 @@ export const generators: Record<GeneratorNames, Generator> = {
     production: {
       type: "generators",
       target: "worker",
-      baseAmount: 1,
-      increase: 1,
+      baseAmount: 0.1,
+      increase: 0.1,
     },
   },
   mother: {
@@ -59,8 +59,8 @@ export const generators: Record<GeneratorNames, Generator> = {
     production: {
       type: "generators",
       target: "breeder",
-      baseAmount: 1,
-      increase: 1,
+      baseAmount: 0.1,
+      increase: 0.1,
     },
   },
   queen: {
@@ -70,8 +70,8 @@ export const generators: Record<GeneratorNames, Generator> = {
     production: {
       type: "generators",
       target: "mother",
-      baseAmount: 1,
-      increase: 1,
+      baseAmount: 0.1,
+      increase: 0.1,
     },
   },
   demiGod: {
@@ -81,8 +81,8 @@ export const generators: Record<GeneratorNames, Generator> = {
     production: {
       type: "generators",
       target: "queen",
-      baseAmount: 1,
-      increase: 1,
+      baseAmount: 0.1,
+      increase: 0.1,
     },
   },
 }
