@@ -77,13 +77,11 @@ export default defineComponent({
     )
 
     const transforms = computed(() => ({
-      upgrades: `transform: translateY(12vh) scale(${
+      upgrades: `transform: scale(${
         Math.round(upgradesScale.value * 100) / 100
-      }) translateX(-50%)`,
+      }) translateY(9vh) translateX(-50%)`,
       prestige: "transform: translateY(100vh)",
     }))
-
-    watchEffect(() => console.log(transforms.value))
 
     const worldTransform = computed(() =>
       Object.keys(transforms.value).includes(ui.view)

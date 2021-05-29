@@ -91,7 +91,7 @@ export default defineComponent({
 
   .anthill
     position: absolute
-    bottom: 8%
+    bottom: 9vh
     right: 0
     transform: translateX(50%)
     z-index: 15

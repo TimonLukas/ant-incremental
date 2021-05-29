@@ -36,8 +36,8 @@ export default defineComponent({
 <style lang="sass">
 .view-upgrades
   color: white
-  transform: translateX(50%) scale(calc(1 / var(--scale)))
-  transform-origin: center
+  transform: translateX(50%) scale(calc(1 / var(--scale))) translateY(-50%)
+  transform-origin: bottom
   padding: 20rem 2rem 2rem
   display: flex
   align-items: center
