@@ -11,33 +11,29 @@
       :multiplier="state.selectedBuyMultipliers.anthill"
       @buy="$emit('buy', name)"
     )
+  anthill
   button.navigate.upgrades(@click="$emit('navigate', 'upgrades')") Go to upgrades
   button.navigate.prestige(@click="$emit('navigate', 'prestige')") Go to prestige
   buy-multiplier-selector(v-model="state.selectedBuyMultipliers.anthill")
-  .background
-    .dirt
-    .grass
-    .sky
 </template>
 
 <script lang="ts">
-import { defineComponent, watchEffect } from "vue"
+import { defineComponent } from "vue"
 
 import { BuyMultiplierSelector } from "@/components"
-import { Generator } from "@/components/Anthill"
+import { Anthill, Generator } from "@/components/Anthill"
 import { generators } from "@/game/generators"
 import { useProvidedGame } from "@/lib"
 
 export default defineComponent({
   components: {
+    Anthill,
     BuyMultiplierSelector,
     Generator,
   },
   emits: ["buy", "navigate"],
   setup() {
     const { state, multiplierPrices, bonuses } = useProvidedGame()
-
-    watchEffect(() => console.log(JSON.parse(JSON.stringify(multiplierPrices))))
 
     return { state, multiplierPrices, bonuses, generators }
   },
@@ -59,11 +55,20 @@ export default defineComponent({
     left: 1rem
     z-index: 2
 
+  .anthill
+    position: absolute
+    bottom: 15%
+    right: 0
+    transform: translateX(50%)
+    z-index: 2
+    height: 70vh
+
   .generators
     position: relative
-    z-index: 1
+    z-index: 10
     font-size: 1.5rem
     margin-bottom: 9%
+    margin-right: 25vw
 
     .generator
       margin-bottom: 2rem
@@ -79,32 +84,4 @@ export default defineComponent({
     &.prestige
       top: 1rem
       right: 1rem
-
-  .background
-    position: absolute
-    top: 0
-    left: 0
-    width: 100%
-    height: 100%
-
-    > *
-      position: absolute
-      left: 0
-      width: 100%
-
-    .dirt
-      background-color: #4f240c
-      height: 10%
-      bottom: 0
-      z-index: 1
-
-    .grass
-      background-color: #1b9415
-      height: 10%
-      bottom: 8%
-      z-index: 2
-
-    .sky
-      background: linear-gradient(to top, #5eb6e6 0%, #1581bd 100%)
-      height: 100%
 </style>

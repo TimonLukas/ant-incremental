@@ -6,7 +6,6 @@
 
 <style lang="sass">
 .view-prestige
-  background-color: #1581bd
   color: white
   transform: translateY(-100vh)
 

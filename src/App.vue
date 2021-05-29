@@ -1,13 +1,24 @@
 <template lang="pug">
 currency-overlay
-.world(:style="{ '--offset-x': viewOffset.x, '--offset-y': viewOffset.y }")
+.world(:style="worldTransform")
   anthill(@buy="buyGenerator" @navigate="ui.view = $event")
-  upgrades(@buy="buyUpgrade" @navigate="ui.view = $event")
+  upgrades(@buy="buyUpgrade" @navigate="ui.view = $event" :class="{ active: ui.view === 'upgrades' }")
   prestige(@navigate="ui.view = $event")
+  .background
+    .dirt
+    .grass
+    .sky
 </template>
 
 <script lang="ts">
-import { reactive, defineComponent, provide, unref, computed } from "vue"
+import {
+  reactive,
+  defineComponent,
+  provide,
+  unref,
+  computed,
+  watchEffect,
+} from "vue"
 
 import { PROVIDE_KEY } from "@/constants"
 import * as views from "@/views"
@@ -53,22 +64,23 @@ export default defineComponent({
       game.state.upgrades[upgrade] = true
     }
 
-    const viewOffset = computed(
-      () =>
-        ((
-          {
-            anthill: { x: 0, y: 0 },
-            upgrades: { x: 0, y: -1 },
-            prestige: { x: 0, y: 1 },
-          } as Record<string, Record<string, number>>
-        )[ui.view])
+    const transforms = {
+      upgrades: "transform: scale(1.5) translateX(-100vh)",
+      prestige: "transform: translateY(100vh)",
+    }
+    const worldTransform = computed(() =>
+      Object.keys(transforms).includes(ui.view)
+        ? transforms[ui.view as keyof typeof transforms]
+        : null
     )
+
+    watchEffect(() => console.log(ui.view, worldTransform.value))
 
     return {
       buyGenerator,
       buyUpgrade,
       ui,
-      viewOffset,
+      worldTransform,
     }
   },
 })
@@ -91,7 +103,6 @@ body
   height: 100vh
   position: relative
   transition: transform .5s
-  transform: translate(calc(var(--offset-x, 0) * 100vw), calc(var(--offset-y, 0) * 100vh))
 
   > *
     width: 100%
@@ -100,6 +111,36 @@ body
     box-sizing: border-box
     top: 0
     left: 0
+
+  .background
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    transform-origin: center
+    transform: scaleX(3)
+
+    > *
+      position: absolute
+      left: 0
+      width: 100%
+
+    .dirt
+      background-color: #4f240c
+      height: 10%
+      bottom: 0
+      z-index: 1
+
+    .grass
+      background-color: #1b9415
+      height: 10%
+      bottom: 8%
+      z-index: 2
+
+    .sky
+      background: linear-gradient(to top, #5eb6e6 0%, #1581bd 100%)
+      height: 100%
 
 button
   cursor: pointer

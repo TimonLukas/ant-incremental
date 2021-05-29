@@ -29,18 +29,25 @@ export default defineComponent({
 
 <style lang="sass">
 .view-upgrades
-  background-color: #4f240c
   color: white
-  transform: translateY(100vh)
+  transform: translateX(50%) scale(calc(1 / 1.5))
+  transform-origin: center
   padding: 5rem 2rem 2rem
   display: flex
   align-items: center
   justify-content: center
   flex-direction: column
+  z-index: 15
+  transition: opacity .5s
+  opacity: 0
+
+  &.active
+    opacity: 1
 
   .upgrades
     margin-top: 2rem
     width: fit-content
+    max-width: 50vw
 
     .upgrade:not(:last-child)
       margin-bottom: 1rem
@@ -49,6 +56,7 @@ export default defineComponent({
     position: absolute
 
     &.anthill
-      top: 1rem
-      right: 1rem
+      bottom: 1rem
+      left: 50%
+      transform: translateX(-50%)
 </style>
