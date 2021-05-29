@@ -78,11 +78,11 @@ export default defineComponent({
           const ant = ants[i] as Ant
           ant.progress += (ANT_SPEED_IN_PX_P_S * secondDelta) / 1000
 
-          if (ant.progress > canvasSize.width) {
+          if (ant.progress > canvasSize.width + ANT_WIDTH_IN_PX) {
             if (ant.lane === "top") {
               ants[i] = {
                 lane: "bottom",
-                progress: 0,
+                progress: -50,
                 crumb: {
                   width: Math.round(
                     random(CRUMB_MAX_SIZE_IN_PX, CRUMB_MIN_SIZE_IN_PX)

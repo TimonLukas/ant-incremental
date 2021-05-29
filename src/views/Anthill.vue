@@ -75,10 +75,10 @@ export default defineComponent({
 
   .anthill
     position: absolute
-    bottom: 10%
+    bottom: 8%
     right: 0
     transform: translateX(50%)
-    z-index: 2
+    z-index: 15
     height: 70vh
 
   .ants
