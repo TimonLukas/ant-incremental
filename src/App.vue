@@ -12,7 +12,7 @@ import { reactive, defineComponent, provide, unref, computed } from "vue"
 import { PROVIDE_KEY } from "@/constants"
 import * as views from "@/views"
 import { useGame } from "@/game"
-import { GeneratorNames, generators } from "@/game/generators"
+import { GeneratorNames } from "@/game/generators"
 import { Upgrades, upgrades } from "@/game/upgrades"
 
 export default defineComponent({
