@@ -65,7 +65,7 @@ export default defineComponent({
     }
 
     const transforms = {
-      upgrades: "transform: scale(1.5) translateX(-100vh)",
+      upgrades: "transform: scale(1.5) translateX(-50%)",
       prestige: "transform: translateY(100vh)",
     }
     const worldTransform = computed(() =>

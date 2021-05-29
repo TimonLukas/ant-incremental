@@ -47,7 +47,7 @@ export default defineComponent({
   .upgrades
     margin-top: 2rem
     width: fit-content
-    max-width: 50vw
+    max-width: 65vh
 
     .upgrade:not(:last-child)
       margin-bottom: 1rem
