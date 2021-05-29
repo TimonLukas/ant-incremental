@@ -33,7 +33,8 @@ type Ant = {
     }
 )
 
-const random = (max, min = 0) => min + (Math.random() * max - min)
+const random = (max: number, min = 0): number =>
+  min + (Math.random() * max - min)
 
 export default defineComponent({
   props: {
@@ -50,14 +51,14 @@ export default defineComponent({
     })
 
     function updateCanvasSize() {
-      canvasSize.width = canvas.value?.clientWidth
-      canvasSize.height = canvas.value?.clientHeight
+      canvasSize.width = canvas.value?.clientWidth ?? 0
+      canvasSize.height = canvas.value?.clientHeight ?? 0
     }
     useEventListener("resize", useDebounceFn(updateCanvasSize, 50))
     onMounted(updateCanvasSize)
 
     onMounted(() => {
-      const ctx = canvas.value!.getContext("2d")
+      const ctx = canvas.value!.getContext("2d")!
       const ants: Ant[] = []
 
       const active = ref(true)
@@ -71,10 +72,10 @@ export default defineComponent({
 
         if (Date.now() - lastSpawn > (1 / props.antsPerSecond) * 1000) {
           lastSpawn = now
-          ants.push({ lane: "top", progress: 0 })
+          ants.push({ lane: "top", progress: 0, lastX: 0, lastY: 0 })
         }
 
-        for (const i in ants) {
+        for (let i = 0; i < ants.length; i++) {
           const ant = ants[i] as Ant
           ant.progress += (ANT_SPEED_IN_PX_P_S * secondDelta) / 1000
 
@@ -83,6 +84,8 @@ export default defineComponent({
               ants[i] = {
                 lane: "bottom",
                 progress: -50,
+                lastX: 0,
+                lastY: 0,
                 crumb: {
                   width: Math.round(
                     random(CRUMB_MAX_SIZE_IN_PX, CRUMB_MIN_SIZE_IN_PX)
