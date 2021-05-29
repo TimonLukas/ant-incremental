@@ -68,6 +68,10 @@ export default defineComponent({
       let lastSpawn = 0
       let lastExecution = Date.now()
       function updateAndRender() {
+        if (!ctx) {
+          return
+        }
+
         const now = Date.now()
         const secondDelta = now - lastExecution
         lastExecution = now
@@ -167,5 +171,6 @@ export default defineComponent({
 
 <style lang="sass">
 canvas.ants
+  image-rendering: pixelated
   z-index: 10
 </style>

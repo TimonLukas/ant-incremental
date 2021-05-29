@@ -27,7 +27,7 @@ export const upgrades: Record<Upgrades, Upgrade> = {
       "Worker Ant production is increased based on Breeder Ants purchased",
     target: "worker",
     scaleBuyable: "breeder",
-    coefficient: 1.09,
+    coefficient: 1.05,
     baseCost: {
       currency: Currency.CRUMBS,
       amount: 1000,
@@ -40,7 +40,7 @@ export const upgrades: Record<Upgrades, Upgrade> = {
       "Breeder Ant production is increased based on Mother Ants purchased",
     target: "breeder",
     scaleBuyable: "mother",
-    coefficient: 1.09,
+    coefficient: 1.05,
     baseCost: {
       currency: Currency.CRUMBS,
       amount: 13_000,
@@ -53,7 +53,7 @@ export const upgrades: Record<Upgrades, Upgrade> = {
       "Mother Ant production is increased based on Queen Ants purchased",
     target: "mother",
     scaleBuyable: "queen",
-    coefficient: 1.09,
+    coefficient: 1.05,
     baseCost: {
       currency: Currency.CRUMBS,
       amount: 1e6,
@@ -66,7 +66,7 @@ export const upgrades: Record<Upgrades, Upgrade> = {
       "Queen Ant production is increased based on Demi-god Ants purchased",
     target: "queen",
     scaleBuyable: "demiGod",
-    coefficient: 1.09,
+    coefficient: 1.05,
     baseCost: {
       currency: Currency.CRUMBS,
       amount: 1e8,
@@ -79,7 +79,7 @@ export const upgrades: Record<Upgrades, Upgrade> = {
       "Demi-god Ant production is multipliers based on Worker Ants purchased",
     target: "demiGod",
     scaleBuyable: "worker",
-    coefficient: 1.09,
+    coefficient: 1.05,
     baseCost: {
       currency: Currency.CRUMBS,
       amount: 1e15,
