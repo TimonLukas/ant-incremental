@@ -1,6 +1,6 @@
 <template lang="pug">
 currency-overlay
-.world(:style="worldTransform")
+.world(:style="[worldTransform, dayNightCycle.cssVars]")
   anthill(@buy="buyGenerator" @navigate="ui.view = $event" @anthill-width="anthillWidth = $event")
   upgrades(@buy="buyUpgrade" @navigate="ui.view = $event" :class="{ active: ui.view === 'upgrades' }" :scale="upgradesScale")
   prestige(@navigate="ui.view = $event")
@@ -8,16 +8,21 @@ currency-overlay
     .dirt
     .grass
     .sky
+      .celestial-bodies
+        img.sun(src="@/assets/sun.png")
+        img.moon(src="@/assets/moon.png")
 </template>
 
 <script lang="ts">
 import { reactive, defineComponent, provide, unref, computed, ref } from "vue"
+import * as TWEEN from "@tweenjs/tween.js"
 
 import { PROVIDE_KEY } from "@/constants"
 import * as views from "@/views"
 import { useGame } from "@/game"
 import { GeneratorNames } from "@/game/generators"
 import { Upgrades, upgrades } from "@/game/upgrades"
+import { useDayNightCycle } from "@/visuals"
 
 export default defineComponent({
   components: views,
@@ -73,6 +78,8 @@ export default defineComponent({
         : null
     )
 
+    const dayNightCycle = useDayNightCycle()
+
     return {
       buyGenerator,
       buyUpgrade,
@@ -80,6 +87,7 @@ export default defineComponent({
       worldTransform,
       anthillWidth,
       upgradesScale,
+      dayNightCycle,
     }
   },
 })
@@ -128,7 +136,7 @@ body
 
     .dirt
       background-color: #4f240c
-      height: 10%
+      height: 8%
       bottom: 0
       z-index: 1
 
@@ -139,8 +147,29 @@ body
       z-index: 2
 
     .sky
-      background: linear-gradient(to top, #5eb6e6 0%, #1581bd 100%)
+      background: linear-gradient(to bottom, var(--day-night-cycle-gradient-color-1) 0%, var(--day-night-cycle-gradient-color-2) 50%, var(--day-night-cycle-gradient-color-3) 100%)
       height: 100%
+      display: flex
+      align-items: center
+      justify-content: center
+      --day-progress: 0deg
+
+      .celestial-bodies
+        position: relative
+        transform: scaleX(calc(1 / 3)) translateY(50vh) rotate(calc(360deg * var(--day-night-cycle-progress-raw)))
+        transition: transform linear 1s
+
+        .sun
+          position: absolute
+          bottom: 0
+          left: 0
+          transform: translate(-50%, -80vh)
+
+        .moon
+          position: absolute
+          top: 0
+          left: 0
+          transform: translate(-50%, 80vh)
 
 button
   cursor: pointer
